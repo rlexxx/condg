@@ -1,0 +1,542 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>condg 葱丁</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  min-height:100vh;
+  position:relative;
+  overflow-x:hidden;
+  background:#f0e8f0;
+  cursor:default;
+}
+
+.bg-fluid{
+  position:fixed;inset:0;
+  overflow:hidden;
+  z-index:0;
+  pointer-events:none;
+}
+.bg-fluid .blob{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:0.5;
+  will-change:transform;
+}
+.blob-1{
+  width:550px;height:550px;
+  background:#d9c4f0;
+  top:-10%;left:-8%;
+  animation:blobMove1 18s ease-in-out infinite;
+}
+.blob-2{
+  width:500px;height:500px;
+  background:#f7c4d4;
+  top:40%;right:-10%;
+  animation:blobMove2 20s ease-in-out infinite;
+}
+.blob-3{
+  width:450px;height:450px;
+  background:#b8d9b8;
+  bottom:-8%;left:30%;
+  animation:blobMove3 22s ease-in-out infinite;
+}
+.blob-4{
+  width:350px;height:350px;
+  background:#d9c4f0;
+  top:10%;right:15%;
+  opacity:0.35;
+  animation:blobMove4 16s ease-in-out infinite;
+}
+.blob-5{
+  width:400px;height:400px;
+  background:#f7c4d4;
+  bottom:20%;left:-5%;
+  opacity:0.35;
+  animation:blobMove5 19s ease-in-out infinite;
+}
+@keyframes blobMove1{
+  0%,100%{transform:translate(0,0) scale(1) rotate(0deg)}
+  25%{transform:translate(80px,-60px) scale(1.08) rotate(5deg)}
+  50%{transform:translate(-40px,80px) scale(0.95) rotate(-3deg)}
+  75%{transform:translate(60px,40px) scale(1.04) rotate(4deg)}
+}
+@keyframes blobMove2{
+  0%,100%{transform:translate(0,0) scale(1) rotate(0deg)}
+  25%{transform:translate(-70px,50px) scale(0.92) rotate(-4deg)}
+  50%{transform:translate(50px,-60px) scale(1.06) rotate(6deg)}
+  75%{transform:translate(-30px,-30px) scale(0.98) rotate(-2deg)}
+}
+@keyframes blobMove3{
+  0%,100%{transform:translate(0,0) scale(1) rotate(0deg)}
+  25%{transform:translate(-50px,-70px) scale(1.05) rotate(-5deg)}
+  50%{transform:translate(70px,30px) scale(0.94) rotate(4deg)}
+  75%{transform:translate(-40px,60px) scale(1.02) rotate(-3deg)}
+}
+@keyframes blobMove4{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(40px,-30px) scale(1.1)}
+  66%{transform:translate(-30px,20px) scale(0.9)}
+}
+@keyframes blobMove5{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(-50px,-40px) scale(0.95)}
+  66%{transform:translate(30px,50px) scale(1.08)}
+}
+
+.bg-deco{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:1;
+}
+.bg-deco .line{
+  position:absolute;
+  height:1.5px;
+  border-radius:2px;
+}
+.bg-deco .line-1{top:15%;left:2%;width:120px;background:rgba(124,179,66,0.07);transform:rotate(30deg)}
+.bg-deco .line-2{bottom:22%;right:3%;width:160px;background:rgba(124,179,66,0.06);transform:rotate(-20deg)}
+.bg-deco .ring{
+  position:absolute;
+  border-radius:50%;
+  border:1.5px solid;
+}
+.bg-deco .ring-1{top:35%;right:2%;width:40px;height:40px;border-color:rgba(124,179,66,0.06)}
+.bg-deco .ring-2{bottom:15%;left:6%;width:24px;height:24px;border-color:rgba(124,179,66,0.05)}
+.bg-deco .dot{
+  position:absolute;
+  border-radius:50%;
+}
+.bg-deco .dot-1{top:22%;left:4%;width:6px;height:6px;background:rgba(124,179,66,0.08)}
+.bg-deco .dot-2{top:50%;right:1%;width:8px;height:8px;background:rgba(124,179,66,0.06)}
+
+.main-content{position:relative;z-index:2}
+
+.page-wrap{
+  position:relative;
+  max-width:1040px;
+  margin:0 auto;
+  padding:64px 48px 48px;
+}
+
+header{
+  margin-bottom:52px;
+  padding-left:8px;
+}
+header h1{
+  font-size:54px;font-weight:800;letter-spacing:-1px;margin-bottom:10px;line-height:1.1;
+}
+header h1 .condg{color:#7CB342}
+header h1 .congding{color:#2C2C2C}
+header .subtitle{font-size:20px;color:#777;font-weight:400;margin-bottom:6px}
+header .tagline{font-size:14px;color:#aaa;font-weight:300}
+
+.card-wrapper{
+  position:relative;display:flex;gap:0;
+  background:rgba(255,255,255,0.10);
+  backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+  border-radius:28px;padding:0;margin-bottom:28px;
+  border:1px solid transparent;background-clip:padding-box;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.5),
+    inset 0 -1px 0 rgba(255,255,255,0.08),
+    inset 3px 0 0 rgba(255,255,255,0.12),
+    inset -1px 0 0 rgba(0,0,0,0.02),
+    0 0 24px rgba(80,80,80,0.07),
+    0 0 48px rgba(120,120,120,0.045),
+    0 0 72px rgba(160,160,160,0.035),
+    0 16px 56px rgba(0,0,0,0.15),
+    0 8px 20px rgba(0,0,0,0.10),
+    0 3px 0 rgba(255,255,255,0.2);
+  overflow:visible;z-index:1;
+  cursor:none;
+}
+.card-wrapper::before{
+  content:'';position:absolute;inset:0;border-radius:28px;padding:1.5px;
+  background:linear-gradient(150deg,rgba(255,255,255,0.7) 0%,rgba(255,255,255,0.5) 20%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.1) 70%,rgba(0,0,0,0.03) 100%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  pointer-events:none;z-index:2;
+}
+
+.card-dispersion{
+  position:absolute;inset:-5px;border-radius:32px;
+  pointer-events:none;z-index:0;
+  opacity:0;transition:opacity 0.3s ease;
+}
+.card-dispersion.active{opacity:1}
+.card-dispersion .disp-light,.card-dispersion .disp-mid,.card-dispersion .disp-dark{
+  position:absolute;inset:0;border-radius:28px;
+  border:2px solid transparent;transition:transform 0.12s ease-out;
+}
+.card-dispersion .disp-light{border-color:rgba(200,200,200,0.20);filter:blur(1px)}
+.card-dispersion .disp-mid{border-color:rgba(140,140,140,0.15);filter:blur(1.5px)}
+.card-dispersion .disp-dark{border-color:rgba(80,80,80,0.12);filter:blur(2px)}
+
+.card-left{
+  flex:0 0 28%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:36px 16px;gap:14px;
+  position:relative;z-index:3;
+}
+.card-left a{pointer-events:auto;cursor:pointer !important}
+.card-left .card-vbox{display:flex;flex-direction:column;width:100%;gap:0}
+
+.card-vbox .top-half{
+  display:flex;align-items:center;gap:12px;
+  padding:0 4px 12px 4px;
+  border-bottom:1px solid rgba(0,0,0,0.04);
+}
+.card-vbox .top-half .ci{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  overflow:hidden;background:#f0f0f0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  font-size:16px;font-weight:700;color:#fff;
+}
+.card-vbox .top-half .ci img{width:100%;height:100%;object-fit:cover;display:block}
+.card-vbox .top-half .cn{font-size:18px;font-weight:700;color:#2C2C2C}
+
+.card-vbox .bot-half{
+  display:flex;flex-direction:column;gap:6px;padding-top:12px;
+  cursor:auto;
+}
+.card-vbox .bot-half a{
+  display:block;font-size:13px;font-weight:600;color:#558B2F;text-decoration:none;
+  padding:6px 14px;border-radius:20px;
+  background:rgba(124,179,66,0.10);border:1px solid rgba(124,179,66,0.15);
+  transition:background 0.2s;text-align:center;cursor:pointer !important;
+}
+.card-vbox .bot-half a:hover{background:rgba(124,179,66,0.20)}
+
+.ci.codex{background:linear-gradient(135deg,#7CB342,#8BC34A)}
+.ci.ccsw{background:linear-gradient(135deg,#42A5F5,#64B5F6)}
+.ci.deepseek{background:linear-gradient(135deg,#1E88E5,#1565C0)}
+.ci.codexpp{background:linear-gradient(135deg,#7CB342,#8BC34A)}
+
+.card-right{
+  flex:1;
+  background:rgba(255,255,255,0.25);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:18px;padding:26px 28px;
+  margin:14px 14px 14px 0;
+  border:1px solid rgba(255,255,255,0.35);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,0.55),inset 0 -1px 0 rgba(0,0,0,0.02);
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:3;
+  transition:transform 0.15s ease-out;will-change:transform;
+}
+.card-right p{font-size:16px;line-height:1.75;color:#444;pointer-events:none}
+
+.mag-glass{
+  position:fixed;
+  width:120px;height:48px;
+  border-radius:60px;
+  pointer-events:none;
+  z-index:999999;
+  transform:translate(-50%,-50%) scale(0);
+  opacity:0;
+  transition:transform 0.25s ease-out, opacity 0.25s ease-out;
+  background:#f8f6f8;
+  border:1px solid rgba(255,255,255,0.5);
+  box-shadow:
+    0 0 6px rgba(200,200,200,0.12),
+    0 0 16px rgba(140,140,140,0.08),
+    0 0 28px rgba(80,80,80,0.06),
+    0 4px 20px rgba(0,0,0,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.3),
+    inset 0 -1px 0 rgba(0,0,0,0.03);
+  overflow:hidden;
+}
+.mag-glass .mag-clip{
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;
+  will-change:transform;
+  transform-origin:0 0;
+  border-radius:60px;
+  overflow:hidden;
+}
+
+.video-section{
+  margin-top:48px;
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+  border-radius:28px;padding:32px 32px;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,0.5),inset 0 -1px 0 rgba(255,255,255,0.08),0 14px 48px rgba(0,0,0,0.08),0 6px 16px rgba(0,0,0,0.05);
+  border:1px solid rgba(255,255,255,0.25);
+}
+.video-section .video-header{text-align:left;margin-bottom:14px}
+.video-section .video-header h2{font-size:22px;font-weight:700;color:#2C2C2C}
+.video-section .video-body{text-align:left}
+.video-section a{
+  display:inline-block;padding:12px 36px;
+  background:rgba(124,179,66,0.12);color:#558B2F;
+  border:1px solid rgba(124,179,66,0.25);border-radius:36px;
+  font-size:16px;font-weight:600;text-decoration:none;
+  transition:background 0.2s,transform 0.15s;
+}
+.video-section a:hover{background:rgba(124,179,66,0.22);transform:scale(1.02)}
+
+footer{margin-top:56px;text-align:center;font-size:14px;color:#bbb;padding-bottom:10px}
+
+@media(max-width:720px){
+  .page-wrap{padding:40px 20px 32px;max-width:100%}
+  header{padding-left:0}
+  header h1{font-size:38px}
+  header .subtitle{font-size:16px}
+  .card-wrapper{flex-direction:column}
+  .card-left{flex:unset;padding:28px 16px 12px}
+  .card-right{margin:0 12px 12px;padding:18px}
+  .card-right p{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-fluid">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+  <div class="blob blob-5"></div>
+</div>
+
+<div class="bg-deco">
+  <span class="line line-1"></span>
+  <span class="line line-2"></span>
+  <span class="ring ring-1"></span>
+  <span class="ring ring-2"></span>
+  <span class="dot dot-1"></span>
+  <span class="dot dot-2"></span>
+</div>
+
+<div class="mag-glass" id="magGlass">
+  <div class="mag-clip" id="magClip"></div>
+</div>
+
+<div class="main-content">
+<div class="page-wrap" id="pageWrap">
+
+  <header>
+    <h1><span class="condg">condg</span> <span class="congding">葱丁</span></h1>
+    <p class="subtitle">一个小小的网站，跟葱丁一样，简单，实用。</p>
+    <p class="tagline">——每个应用都亲自尝过，才放进来。</p>
+  </header>
+
+  <!-- Card 1: Codex -->
+  <div class="card-wrapper" data-card="0">
+    <div class="card-dispersion" data-disp="0">
+      <div class="disp-light"></div>
+      <div class="disp-mid"></div>
+      <div class="disp-dark"></div>
+    </div>
+    <div class="card-left">
+      <div class="card-vbox">
+        <div class="top-half">
+          <div class="ci codex"><img src="图标/codex-color.png" alt="Codex"></div>
+          <span class="cn">Codex</span>
+        </div>
+        <div class="bot-half">
+          <a href="https://apps.microsoft.com/detail/9plm9xgg6vks" target="_blank">官方链接</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-right">
+      <p>Codex 是一个为开发者打造的 AI 编程助手，支持多语言代码生成、调试与重构。它轻量、快速，能无缝融入你的日常开发流程。像葱丁一样，简单不花哨，用起来顺手，真正解决实际问题。</p>
+    </div>
+  </div>
+
+  <!-- Card 2: CC Switch -->
+  <div class="card-wrapper" data-card="1">
+    <div class="card-dispersion" data-disp="1">
+      <div class="disp-light"></div>
+      <div class="disp-mid"></div>
+      <div class="disp-dark"></div>
+    </div>
+    <div class="card-left">
+      <div class="card-vbox">
+        <div class="top-half">
+          <div class="ci ccsw"><img src="图标/ccswitch.png" alt="CC Switch"></div>
+          <span class="cn">CC Switch</span>
+        </div>
+        <div class="bot-half">
+          <a href="https://cc-switch.com/" target="_blank">官方链接</a>
+          <a href="https://github.com/farion1231/cc-switch/releases/download/v3.16.0/CC-Switch-v3.16.0-Windows-Portable.zip" target="_blank">Win直链下载</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-right">
+      <p>CC Switch 是一款轻量的 AI 模型切换工具，让你在 Codex 及其他 AI 平台间快速切换底层模型。无需繁杂配置，一键更换，找到最适合当前任务的模型。省时间，省精力，专注在真正重要的事情上。</p>
+    </div>
+  </div>
+
+  <!-- Card 3: DeepSeek API -->
+  <div class="card-wrapper" data-card="2">
+    <div class="card-dispersion" data-disp="2">
+      <div class="disp-light"></div>
+      <div class="disp-mid"></div>
+      <div class="disp-dark"></div>
+    </div>
+    <div class="card-left">
+      <div class="card-vbox">
+        <div class="top-half">
+          <div class="ci deepseek"><img src="图标/deepseek-color.png" alt="DeepSeek"></div>
+          <span class="cn">DeepSeek API</span>
+        </div>
+        <div class="bot-half">
+          <a href="https://platform.deepseek.com/" target="_blank">前往开放平台</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-right">
+      <p>DeepSeek API 提供高性价比的 AI 模型调用服务，性能强劲、价格亲民。无论你是做推理、代码生成还是对话应用，它都能以极低的成本带来出色的效果。开源精神，人人可用。</p>
+    </div>
+  </div>
+
+  <!-- Card 4: Codex++ -->
+  <div class="card-wrapper" data-card="3">
+    <div class="card-dispersion" data-disp="3">
+      <div class="disp-light"></div>
+      <div class="disp-mid"></div>
+      <div class="disp-dark"></div>
+    </div>
+    <div class="card-left">
+      <div class="card-vbox">
+        <div class="top-half">
+          <div class="ci codexpp"><img src="图标/codex-color.png" alt="Codex++"></div>
+          <span class="cn">Codex++</span>
+        </div>
+        <div class="bot-half">
+          <a href="https://github.com/BigPizzaV3/CodexPlusPlus/releases" target="_blank">官方链接</a>
+          <a href="https://github.com/BigPizzaV3/CodexPlusPlus/releases/download/v1.2.4/CodexPlusPlus-1.2.4-windows-x64-setup.exe" target="_blank">Win直链下载</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-right">
+      <p>Codex++ 是 Codex 的增强版管理工具，提供更强大的会话管理、自定义指令模板和多会话协同能力。适合深度用户和团队协作场景，在保留简洁体验的同时，解锁更多高级功能。</p>
+    </div>
+  </div>
+
+  <div class="video-section">
+    <div class="video-header"><h2>📺 配置教程</h2></div>
+    <div class="video-body"><a href="#" target="_blank">点击观看教程视频</a></div>
+  </div>
+
+  <footer>condg 葱丁 · 持续更新</footer>
+
+</div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var rights = document.querySelectorAll('.card-right');
+  rights.forEach(function(el){
+    var w = el.closest('.card-wrapper');
+    if(!w)return;
+    var idx = w.getAttribute('data-card');
+    var disp = document.querySelector('.card-dispersion[data-disp="'+idx+'"]');
+    if(!disp)return;
+    var dL=disp.querySelector('.disp-light'), dM=disp.querySelector('.disp-mid'), dD=disp.querySelector('.disp-dark');
+    if(!dL||!dM||!dD)return;
+    var raf=null;
+    function mv(e){
+      var r=w.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top, cx=r.width/2, cy=r.height/2;
+      if(raf)cancelAnimationFrame(raf);
+      raf=requestAnimationFrame(function(){
+        el.style.transform='translate('+((x-cx)/cx*8)+'px,'+((y-cy)/cy*8)+'px)';
+        var nx=(x-cx)/cx, ny=(y-cy)/cy;
+        dL.style.transform='translate('+(nx*-8)+'px,'+(ny*-8)+'px)';
+        dM.style.transform='translate('+(nx*1)+'px,'+(ny*1)+'px)';
+        dD.style.transform='translate('+(nx*8)+'px,'+(ny*8)+'px)';
+        raf=null;
+      });
+    }
+    w.addEventListener('mouseenter',function(){disp.classList.add('active')});
+    w.addEventListener('mousemove',mv,{passive:true});
+    w.addEventListener('mouseleave',function(){
+      if(raf){cancelAnimationFrame(raf);raf=null}
+      el.style.transform='translate(0px,0px)';
+      disp.classList.remove('active');
+      dL.style.transform='translate(0px,0px)';
+      dM.style.transform='translate(0px,0px)';
+      dD.style.transform='translate(0px,0px)';
+    });
+  });
+
+  var glass = document.getElementById('magGlass');
+  var magClip = document.getElementById('magClip');
+  var pageWrap = document.getElementById('pageWrap');
+  var wrappers = document.querySelectorAll('.card-wrapper');
+
+  var MAG = 1.3;
+  var HW = 60, HH = 24;
+  var active = false;
+  var mx = 0, my = 0;
+  var rafId = null;
+  var onBotHalf = false;
+
+  var clone = pageWrap.cloneNode(true);
+  var cg = clone.querySelector('#magGlass');
+  if(cg) cg.remove();
+  magClip.appendChild(clone);
+
+  function syncSize(){
+    var pw = pageWrap.getBoundingClientRect();
+    magClip.firstElementChild.style.width = pw.width + 'px';
+    magClip.firstElementChild.style.height = pw.height + 'px';
+  }
+  syncSize();
+  window.addEventListener('resize', syncSize);
+
+  function tick(){
+    if(!active || onBotHalf){ rafId=null; return; }
+    glass.style.left = mx + 'px';
+    glass.style.top  = my + 'px';
+    var pw = pageWrap.getBoundingClientRect();
+    var ox = mx - pw.left;
+    var oy = my - pw.top;
+    var child = magClip.firstElementChild;
+    child.style.transformOrigin = '0 0';
+    child.style.transform = 'translate(' + (HW - ox*MAG) + 'px,' + (HH - oy*MAG) + 'px) scale(' + MAG + ')';
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function hideMag(){
+    active = false; onBotHalf = false;
+    glass.style.transform = 'translate(-50%,-50%) scale(0)';
+    glass.style.opacity = '0';
+    if(rafId){ cancelAnimationFrame(rafId); rafId=null; }
+  }
+
+  function showMag(){
+    if(onBotHalf){ hideMag(); return; }
+    active = true;
+    glass.style.transform = 'translate(-50%,-50%) scale(1)';
+    glass.style.opacity = '1';
+    if(!rafId) rafId = requestAnimationFrame(tick);
+  }
+
+  document.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; }, {passive:true});
+
+  // Trigger on entire card-wrapper (borders included)
+  wrappers.forEach(function(w){
+    w.addEventListener('mouseenter', showMag);
+    w.addEventListener('mouseleave', hideMag);
+  });
+
+  // Hide on .bot-half (link area)
+  document.querySelectorAll('.bot-half').forEach(function(bh){
+    bh.addEventListener('mouseenter', function(){ onBotHalf=true; hideMag(); });
+    bh.addEventListener('mouseleave', function(){ onBotHalf=false; showMag(); });
+  });
+})();
+</script>
+
+</body>
+</html>
